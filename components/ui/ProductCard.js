@@ -19,7 +19,7 @@ const ProductCard = () => {
         <Text style={styles.name}>Canon EOS 90 D</Text>
         <Text style={styles.vendor}>Kameravest</Text>
         <View style={styles.priceContainer}>
-          <Text style={styles.price}>Rp 75000</Text>
+          <Text style={styles.price}>Rp 75.000</Text>
           <Text style={styles.day}> / day</Text>
         </View>
         <View style={styles.rate}>

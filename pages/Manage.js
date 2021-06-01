@@ -2,12 +2,16 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
-  Image,
+  ScrollView,
   ImageBackground,
   View,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 import TopBar from '../components/sections/TopBar';
+import ToPaySection from '../components/sections/ToPaySection';
+import OnGoingSection from '../components/sections/OnGoingSection';
+import CompletedSection from '../components/sections/CompletedSection';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,7 +19,18 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 
 const ManageScreen = ({navigation}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-
+  const renderSwitch = index => {
+    switch (index) {
+      case 0:
+        return <ToPaySection />;
+      case 1:
+        return <OnGoingSection />;
+      case 2:
+        return <CompletedSection />;
+      default:
+        return <></>;
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -50,6 +65,7 @@ const ManageScreen = ({navigation}) => {
             selectedIndex={selectedIndex}
             onTabPress={index => setSelectedIndex(index)}
           />
+          <ScrollView>{renderSwitch(selectedIndex)}</ScrollView>
         </View>
       </ImageBackground>
     </SafeAreaView>
