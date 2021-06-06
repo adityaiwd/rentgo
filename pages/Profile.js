@@ -15,8 +15,11 @@ import theme from '../styles/theme.style';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = () => {
+  const navigation = useNavigation();
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +55,9 @@ const ProfileScreen = ({navigation}) => {
                   size={25}
                 />
               </View>
-              <TouchableOpacity style={styles.verifyButton}>
+              <TouchableOpacity
+                style={styles.verifyButton}
+                onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.buttonText}>Verify My Account</Text>
               </TouchableOpacity>
             </View>

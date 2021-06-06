@@ -2,7 +2,12 @@ import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import theme from '../../styles/theme.style';
 
-const SectionTitle = ({title, onSeeAllPress, seeAllValue, withoutSeeAll}) => {
+const DetailSectionTitle = ({
+  title,
+  onSeeAllPress,
+  seeAllValue,
+  withoutSeeAll,
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -21,13 +26,14 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
-    marginHorizontal: 30,
+    marginBottom: 10,
+    marginHorizontal: 20,
   },
   title: {
     fontFamily: theme.FONT_WEIGHT_BOLD,
-    fontSize: theme.FONT_SIZE_LARGE,
+    fontSize: theme.FONT_SIZE_MEDIUM,
+    color: theme.PRIMARY_BLACK,
   },
 });
 
-export default SectionTitle;
+export default DetailSectionTitle;

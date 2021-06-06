@@ -3,10 +3,15 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import theme from '../../styles/theme.style';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native';
 
 const CategoryCard = ({colors, icon, title, product}) => {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate('Category', {title})}>
       <LinearGradient colors={colors} style={styles.linearGradient}>
         <View style={styles.content}>
           <MaterialCommunityIcons name={icon} color="#fff" size={20} />

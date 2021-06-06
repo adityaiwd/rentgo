@@ -11,6 +11,7 @@ export default {
   FONT_WEIGHT_MEDIUM: 'Montserrat-Regular',
   FONT_WEIGHT_SEMIBOLD: 'Montserrat-SemiBold',
   FONT_WEIGHT_BOLD: 'Montserrat-Bold',
+  FONT_LOGO: 'Sen-ExtraBold',
   BACKGROUND_COLOR_LIGHT: '#fff',
   CONTAINER_PADDING: 20,
 };

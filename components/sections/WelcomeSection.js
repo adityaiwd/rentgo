@@ -1,30 +1,24 @@
 import React from 'react';
-import {Text, View, StyleSheet, TextInput} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import theme from '../../styles/theme.style';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SearchBar from '../ui/SearchBar';
 
 const WelcomeSection = () => {
   return (
-    <View style={styles.jumbotron}>
+    <View style={styles.container}>
       <Text style={styles.textLargeStyle}>Hai Safira,</Text>
       <Text style={styles.textSmallStyle}>What items do you want to rent?</Text>
-      <View style={styles.searchBar}>
-        <MaterialIcons name="search" color={theme.PRIMARY_COLOR} size={25} />
-        <TextInput
-          placeholder="Search Here"
-          placeholderTextColor="#828282"
-          style={styles.input}
-        />
-      </View>
+      <SearchBar />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  jumbotron: {
+  container: {
     width: '100%',
     paddingTop: 20,
     paddingHorizontal: 20,
+    paddingBottom: 35,
   },
   input: {
     width: '90%',
@@ -37,7 +31,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-    marginVertical: 35,
   },
   textLargeStyle: {
     color: '#fff',
@@ -48,6 +41,7 @@ const styles = StyleSheet.create({
     fontSize: theme.FONT_SIZE_MEDIUM,
     color: '#fff',
     fontFamily: theme.FONT_WEIGHT_MEDIUM,
+    marginBottom: 35,
   },
 });
 

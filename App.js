@@ -7,30 +7,13 @@ import HomeScreen from './pages/Home';
 import ManageScreen from './pages/Manage';
 import ProfileScreen from './pages/Profile';
 import CartScreen from './pages/Cart';
+import CategoryScreen from './pages/Category';
 import ProductDetailScreen from './pages/ProductDetail';
+import LoginScreen from './pages/Login';
+import RegisterScreen from './pages/Register';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
-
-function DetailsScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Details!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings screen!</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
 
 function ScannerScreen({navigation}) {
   return (
@@ -145,6 +128,9 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeTabScreen} />
         <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
         <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Category" component={CategoryScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

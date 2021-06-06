@@ -6,27 +6,38 @@ import {
   ImageBackground,
   View,
   Text,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
+import StarRate from '../components/ui/StarRate';
+import ItemCounter from '../components/ui/ItemCounter';
+import RentDate from '../components/ui/RentDate';
+import DetailSectionTitle from '../components/ui/DetailSectionTitle';
+import RentAction from '../components/ui/RentAction';
+import ReviewsSection from '../components/sections/ReviewsSection';
+import RelatedProductsSection from '../components/sections/RelatedProductsSection';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import DatePicker from 'react-native-date-picker';
+import Modal from 'react-native-modal';
 const ProductDetailScreen = ({navigation}) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
+  const [itemAmount, setItemAmount] = useState(1);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar cartOnly title="Product Detail" withBackButton />
         <View style={styles.content}>
-          <View style={styles.product}>
-            <Image
-              resizeMode="cover"
-              style={styles.productImage}
-              source={require('../assets/images/product-camera.jpg')}
-            />
+          <ScrollView>
+            <View style={styles.imageContainer}>
+              <Image
+                resizeMode="cover"
+                style={styles.productImage}
+                source={require('../assets/images/product-camera.jpg')}
+              />
+            </View>
             <View style={styles.description}>
               <Text style={styles.name}>Canon EOS 90 D</Text>
               <Text style={styles.vendor}>Kameravest</Text>
@@ -34,61 +45,30 @@ const ProductDetailScreen = ({navigation}) => {
                 <Text style={styles.price}>Rp 75000</Text>
                 <Text style={styles.day}> / day</Text>
               </View>
-              <View style={styles.rate}>
-                <MaterialIcons
-                  name="star"
-                  color={theme.PRIMARY_COLOR}
-                  size={20}
-                />
-                <MaterialIcons
-                  name="star"
-                  color={theme.PRIMARY_COLOR}
-                  size={20}
-                />
-                <MaterialIcons
-                  name="star"
-                  color={theme.PRIMARY_COLOR}
-                  size={20}
-                />
-                <MaterialIcons
-                  name="star"
-                  color={theme.PRIMARY_COLOR}
-                  size={20}
-                />
-                <MaterialIcons name="star" color="#aaa" size={20} />
-                <Text style={styles.rateText}>4.0 (20)</Text>
-              </View>
+              <StarRate />
             </View>
-          </View>
-          <SegmentedControlTab
-            values={['Details', 'Reviews (12)']}
-            borderRadius={0}
-            tabTextStyle={{
-              fontFamily: theme.FONT_WEIGHT_MEDIUM,
-              borderRightWidth: 0,
-              color: '#888',
-            }}
-            firstTabStyle={{
-              borderRightWidth: 0,
-            }}
-            activeTabStyle={{
-              backgroundColor: 'transparent',
-              borderColor: theme.PRIMARY_COLOR,
-            }}
-            activeTabTextStyle={{
-              borderRightWidth: 0,
-              fontFamily: theme.FONT_WEIGHT_BOLD,
-              color: theme.PRIMARY_COLOR,
-            }}
-            tabStyle={styles.tabStyle}
-            tabsContainerStyle={{
-              borderRightWidth: 0,
-              marginHorizontal: 30,
-              marginVertical: 20,
-            }}
-            selectedIndex={selectedIndex}
-            onTabPress={index => setSelectedIndex(index)}
-          />
+            <View style={styles.rentContainer}>
+              <ItemCounter
+                value={itemAmount}
+                increment={() => setItemAmount(itemAmount + 1)}
+                decrement={() => setItemAmount(itemAmount - 1)}
+              />
+              <RentDate />
+            </View>
+            <DetailSectionTitle title="Overview" withoutSeeAll />
+            <Text style={styles.overviewDesc}>
+              Canon EOS 90D Kit adalah kamera DSLR yang dilengkapi 32.5MP APS-C
+              CMOS Sensor, DIGIC 8 Image Processor, dapat melakukan perekaman 4K
+              UHD 30p Video, dan juga dilengkapi LCD Touchscreen 3 inci. Kamera
+              ini pun memiliki tipe sensor CMOS dengan ukuran 22.3 x 14.8mm.
+              Video pada kamera ini beresolusi Full HD dengan minimum ISO 100
+              dan maksimal ISO 25600.
+            </Text>
+            <ReviewsSection />
+
+            <RelatedProductsSection />
+          </ScrollView>
+          <RentAction />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -104,11 +84,28 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  product: {
-    marginHorizontal: 30,
+  rentContainer: {
     flexDirection: 'row',
+    marginLeft: 20,
+    marginVertical: 20,
   },
-  productImage: {width: '35%', height: 120},
+  scroll: {
+    paddingLeft: 20,
+    marginBottom: 50,
+  },
+  reviews: {
+    marginBottom: 20,
+  },
+  overviewDesc: {
+    marginHorizontal: 20,
+    textAlign: 'justify',
+    marginBottom: 20,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  productImage: {width: '55%', height: 220},
   content: {
     flex: 1,
     borderTopStartRadius: 30,
@@ -120,11 +117,12 @@ const styles = StyleSheet.create({
   description: {
     // padding: 10,
     alignSelf: 'stretch',
-    marginLeft: 15,
+    marginLeft: 20,
   },
   name: {
     fontFamily: theme.FONT_WEIGHT_BOLD,
     fontSize: theme.FONT_SIZE_MEDIUM,
+    color: theme.PRIMARY_BLACK,
   },
   vendor: {
     fontFamily: theme.FONT_WEIGHT_MEDIUM,
