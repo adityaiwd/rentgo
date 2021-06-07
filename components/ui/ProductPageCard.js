@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import theme from '../../styles/theme.style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-const ProductCard = ({...rest}) => {
+const ProductPageCard = ({...rest}) => {
   const navigation = useNavigation();
 
   return (
@@ -43,10 +43,7 @@ const styles = StyleSheet.create({
     // borderColor: '#CCCCCC',
     backgroundColor: theme.BACKGROUND_COLOR_LIGHT,
     borderRadius: 15,
-    width: 150,
     alignItems: 'center',
-    marginLeft: 5,
-    marginRight: 15,
     paddingHorizontal: 10,
     marginVertical: 10,
     paddingBottom: 10,
@@ -97,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductCard;
+export default ProductPageCard;

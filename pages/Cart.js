@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
-  Image,
   ImageBackground,
   View,
   Text,
@@ -14,6 +13,7 @@ import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
 import CartPerVendor from '../components/ui/CartPerVendor';
 import CheckBox from '@react-native-community/checkbox';
+import {useNavigation} from '@react-navigation/native';
 
 const vendor1 = [
   {
@@ -39,7 +39,9 @@ const vendor2 = [
   },
 ];
 
-const CartScreen = ({navigation}) => {
+const CartScreen = () => {
+  const navigation = useNavigation();
+
   const [toggleSelectAll, setToggleSelectAll] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
@@ -78,7 +80,9 @@ const CartScreen = ({navigation}) => {
             </View>
             <Text style={styles.subTotalText}>Subtotal</Text>
             <Text style={styles.totalText}>Rp 275,000</Text>
-            <TouchableOpacity style={styles.checkOutButton}>
+            <TouchableOpacity
+              style={styles.checkOutButton}
+              onPress={() => navigation.navigate('Checkout')}>
               <Text style={styles.checkOutText}>Checkout</Text>
             </TouchableOpacity>
           </View>
@@ -155,14 +159,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderRadius: 15,
     marginTop: 20,
   },
   checkOutText: {
     color: '#fff',
     fontFamily: theme.FONT_WEIGHT_BOLD,
-    fontSize: theme.FONT_SIZE_LARGE,
   },
 });
 

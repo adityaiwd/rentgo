@@ -11,6 +11,9 @@ import CategoryScreen from './pages/Category';
 import ProductDetailScreen from './pages/ProductDetail';
 import LoginScreen from './pages/Login';
 import RegisterScreen from './pages/Register';
+import ImageSearchScreen from './pages/ImageSearch';
+import CheckoutScreen from './pages/Checkout';
+import PaymentScreen from './pages/Payment';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
@@ -58,7 +61,7 @@ function HomeTabScreen() {
       />
       <Tab.Screen
         name="Scan"
-        component={ScannerScreen}
+        component={ImageSearchScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <View
@@ -79,6 +82,7 @@ function HomeTabScreen() {
               />
             </View>
           ),
+          tabBarVisible: false,
         }}
       />
       <Tab.Screen
@@ -131,6 +135,9 @@ export default function App() {
         <Stack.Screen name="Category" component={CategoryScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="ImageSearch" component={ImageSearchScreen} />
+        <Stack.Screen name="Checkout" component={CheckoutScreen} />
+        <Stack.Screen name="Payment" component={PaymentScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

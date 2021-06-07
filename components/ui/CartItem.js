@@ -5,20 +5,22 @@ import NumberFormat from 'react-number-format';
 import CartCounter from './CartCounter';
 import CheckBox from '@react-native-community/checkbox';
 
-const CartItem = ({image, itemName, itemPrice, timePeriod}) => {
+const CartItem = ({image, itemName, itemPrice, timePeriod, noCheckBox}) => {
   const [Counter, setCounter] = useState(1);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (
     <View style={styles.container}>
-      <CheckBox
-        tintColors={{
-          true: '#BCCF84',
-          false: '#ccc',
-        }}
-        disabled={false}
-        value={toggleCheckBox}
-        onValueChange={newValue => setToggleCheckBox(newValue)}
-      />
+      {!noCheckBox && (
+        <CheckBox
+          tintColors={{
+            true: '#BCCF84',
+            false: '#ccc',
+          }}
+          disabled={false}
+          value={toggleCheckBox}
+          onValueChange={newValue => setToggleCheckBox(newValue)}
+        />
+      )}
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={image} />
       </View>

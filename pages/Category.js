@@ -5,6 +5,7 @@ import {
   ImageBackground,
   View,
   Text,
+  ScrollView,
 } from 'react-native';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
@@ -12,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SearchBar from '../components/ui/SearchBar';
+import ProductPageCard from '../components/ui/ProductPageCard';
 
 const CategoryScreen = ({route}) => {
   const navigation = useNavigation();
@@ -25,7 +27,21 @@ const CategoryScreen = ({route}) => {
           withBackButton
         />
         <View style={styles.content}>
-          <SearchBar />
+          <SearchBar
+            style={{flex: 1, backgroundColor: 'red', height: '100%'}}
+          />
+          <ScrollView>
+            <View style={styles.productContainer}>
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+              <ProductPageCard style={styles.product} />
+            </View>
+          </ScrollView>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -48,10 +64,24 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 25,
     marginTop: 15,
+    height: '100%',
     backgroundColor: theme.BACKGROUND_COLOR_LIGHT,
   },
   tabStyle: {
     borderWidth: 0,
+  },
+  productContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1,
+    backgroundColor: 'red',
+    height: '100%',
+  },
+  product: {
+    width: '46%',
+    marginHorizontal: '2%',
+    aspectRatio: 1,
   },
 });
 
