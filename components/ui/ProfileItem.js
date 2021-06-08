@@ -3,9 +3,9 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../styles/theme.style';
 
-const ProfileItem = ({icon, name}) => {
+const ProfileItem = ({icon, name, onPress}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <MaterialIcons name={icon} color={theme.PRIMARY_BLACK} size={25} />
       <Text style={styles.text}>{name}</Text>
     </TouchableOpacity>

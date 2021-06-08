@@ -16,11 +16,17 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import {logoutUser} from '../actions';
+import {connect} from 'react-redux';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({auth}) => {
   const navigation = useNavigation();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const handleLogout = () => {
+    logoutUser();
+    // navigation.reset({routes: [{name: 'Home'}]});
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -75,7 +81,12 @@ const ProfileScreen = () => {
             />
             <ProfileItem icon="settings" name="Settings" />
             <ProfileItem icon="help" name="Help Center" />
-            <ProfileItem icon="info" name="About RentGo" />
+            <ProfileItem
+              icon="info"
+              name="About RentGo"
+              onPress={() => console.log(auth)}
+            />
+            <ProfileItem icon="logout" name="Logout" onPress={handleLogout} />
           </View>
         </ScrollView>
       </ImageBackground>
@@ -145,4 +156,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+const mapStateToProps = state => {
+  return {auth: state.auth};
+};
+
+export default connect(mapStateToProps, {logoutUser})(ProfileScreen);

@@ -9,11 +9,15 @@ const TransactionHeader = ({
   buttonTitle,
   buttonText,
   outlinedButton,
+  onButtonPress,
 }) => {
   return (
     <View style={styles.container}>
       <TransactionCode code={code} date={date} />
-      <MiniButton title={buttonTitle} outlined={outlinedButton}>
+      <MiniButton
+        onPress={onButtonPress}
+        title={buttonTitle}
+        outlined={outlinedButton}>
         {buttonText}
       </MiniButton>
     </View>

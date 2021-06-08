@@ -13,11 +13,20 @@ import BackgroundShape from '../assets/images/shapes.png';
 import FormInput from '../components/ui/FormInput';
 import AuthButton from '../components/ui/AuthButton';
 import {useNavigation} from '@react-navigation/native';
+import {loginRequest} from '../actions';
+import {connect} from 'react-redux';
 
-const LoginScreen = () => {
+const LoginScreen = ({auth}) => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleLogin = () => {
+    loginRequest(loginData);
+    navigation.reset({routes: [{name: 'Home'}]});
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.flexOne}>
@@ -28,20 +37,24 @@ const LoginScreen = () => {
             <Text style={styles.subtitle}>Let's start the journey</Text>
             <FormInput
               label="email"
-              value={email}
+              value={loginData.email}
               keyboardType="email-address"
-              onChangeText={text => setEmail(text)}
+              onChangeText={text => setLoginData({...loginData, email: text})}
             />
             <FormInput
               password
-              value={password}
+              value={loginData.password}
               label="password"
-              onChangeText={text => setPassword(text)}
+              onChangeText={text =>
+                setLoginData({...loginData, password: text})
+              }
             />
-            <AuthButton disabled={!email || !password}>Login</AuthButton>
+            <AuthButton disabled={!loginData} onPress={handleLogin}>
+              Login
+            </AuthButton>
             <View style={styles.toSignUp}>
               <Text style={styles.noAccountText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <TouchableOpacity onPress={() => console.log(auth)}>
                 <Text style={styles.signUpText}>Sign Up</Text>
               </TouchableOpacity>
             </View>
@@ -100,4 +113,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+const mapStateToProps = state => {
+  return {auth: state.auth};
+};
+
+export default connect(mapStateToProps, {loginRequest})(LoginScreen);

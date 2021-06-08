@@ -12,6 +12,7 @@ const TransactionPerVendor = ({
   outlinedButton,
   items,
   withTotal,
+  onHeaderButtonPress,
 }) => {
   return (
     <View style={styles.container}>
@@ -21,6 +22,7 @@ const TransactionPerVendor = ({
         buttonTitle={buttonTitle}
         buttonText={buttonText}
         outlinedButton={outlinedButton}
+        onButtonPress={onHeaderButtonPress}
       />
       {items.map(item => (
         <TransactionItem

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {Button, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -17,6 +18,15 @@ import PaymentScreen from './pages/Payment';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import reducers from './reducers';
+import {setAuthorizationToken} from './actions';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+const {isAuthenticated} = store.getState().auth;
 
 function ScannerScreen({navigation}) {
   return (
@@ -100,45 +110,47 @@ function HomeTabScreen() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={isAuthenticated ? ProfileScreen : LoginScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="person-outline" color={color} size={size} />
           ),
+          tabBarVisible: isAuthenticated,
         }}
       />
     </Tab.Navigator>
   );
 }
 
-const HomeStack = createStackNavigator();
-
-function HomeStackScreen() {
-  return (
-    <HomeStack.Navigator screenOptions={{headerShown: false}}>
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="ProductDetail" component={ProductDetailScreen} />
-    </HomeStack.Navigator>
-  );
-}
-
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+if (AsyncStorage.getItem('token')) {
+  setAuthorizationToken(AsyncStorage.getItem('token'));
+  store.dispatch({
+    type: 'LOGIN_USER',
+    payload: AsyncStorage.getItem('token'),
+  });
+}
+
 export default function App() {
+  console.log(isAuthenticated);
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Home" component={HomeTabScreen} />
-        <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
-        <Stack.Screen name="Cart" component={CartScreen} />
-        <Stack.Screen name="Category" component={CategoryScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="ImageSearch" component={ImageSearchScreen} />
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
-        <Stack.Screen name="Payment" component={PaymentScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Home" component={HomeTabScreen} />
+          <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
+          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="Category" component={CategoryScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="ImageSearch" component={ImageSearchScreen} />
+          <Stack.Screen name="Checkout" component={CheckoutScreen} />
+          <Stack.Screen name="Payment" component={PaymentScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

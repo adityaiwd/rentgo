@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -16,20 +17,13 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {RNCamera} from 'react-native-camera';
-const PendingView = () => (
-  <View
-    style={{
-      flex: 1,
-      backgroundColor: 'lightgreen',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-    <Text>Waiting</Text>
-  </View>
-);
+
 const ImageSearchScreen = () => {
   const navigation = useNavigation();
+  let camera;
   const takePicture = async function (camera) {
     const options = {quality: 0.5, base64: true};
     const data = await camera.takePictureAsync(options);
@@ -40,35 +34,47 @@ const ImageSearchScreen = () => {
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar title="Image Search" withBackButton noIcons />
         <View style={styles.content}>
-          <RNCamera
-            style={styles.preview}
-            type={RNCamera.Constants.Type.back}
-            flashMode={RNCamera.Constants.FlashMode.off}
-            ratio={'1:1'}
-            androidCameraPermissionOptions={{
-              title: 'Permission to use camera',
-              message: 'We need your permission to use your camera',
-              buttonPositive: 'Ok',
-              buttonNegative: 'Cancel',
+          <View
+            style={{
+              height: '30%',
+              width: '100%',
+              marginTop: 30,
             }}>
-            {({camera, status}) => {
-              if (status !== 'READY') return <PendingView />;
-              return (
-                <View
-                  style={{
-                    flex: 0,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => takePicture(camera)}
-                    style={styles.capture}>
-                    <Text style={{fontSize: 14}}> SNAP </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          </RNCamera>
+            <RNCamera
+              ref={ref => {
+                camera = ref;
+              }}
+              style={styles.preview}
+              type={RNCamera.Constants.Type.back}
+              flashMode={RNCamera.Constants.FlashMode.off}
+              ratio={'1:1'}
+              androidCameraPermissionOptions={{
+                title: 'Permission to use camera',
+                message: 'We need your permission to use your camera',
+                buttonPositive: 'Ok',
+                buttonNegative: 'Cancel',
+              }}>
+              <View style={{width: '100%'}}>
+                <Text style={{color: 'transparent'}}>test</Text>
+              </View>
+            </RNCamera>
+          </View>
+          <View
+            style={{
+              flex: 0,
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={() => takePicture(camera)}
+              style={styles.capture}>
+              <MaterialCommunityIcons
+                name="image-search-outline"
+                color={theme.PRIMARY_COLOR}
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -90,17 +96,12 @@ const styles = StyleSheet.create({
   preview: {
     width: '100%',
     position: 'relative',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
   },
   capture: {
     flex: 0,
     backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center',
-    margin: 20,
+    borderRadius: 58,
+    padding: 25,
   },
   shape: {
     width: '100%',
