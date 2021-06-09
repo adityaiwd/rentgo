@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export const setAuthorizationToken = token => {
   if (token) {
-    axios.defaults.headers.common['Authorization'] = token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   } else {
     delete axios.defaults.headers.common['Authorization'];
   }
@@ -24,6 +24,16 @@ export const loginRequest = loginData => async dispatch => {
       payload: token,
     });
   }
+};
+
+export const fetchUserName = token => async dispatch => {
+  const response = await rentgo.get('/user/profile', {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+  dispatch({
+    type: 'SET_NAME',
+    payload: response.data.data.name,
+  });
 };
 
 export const logoutUser = () => async dispatch => {

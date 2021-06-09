@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,23 +18,25 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-import {logoutUser} from '../actions';
+import {logoutUser, fetchUserName} from '../actions';
 import {connect} from 'react-redux';
 
-const ProfileScreen = ({auth, logoutUser}) => {
+const ProfileScreen = ({auth, name, logoutUser, fetchUserName}) => {
   const navigation = useNavigation();
-
   const [selectedIndex, setSelectedIndex] = useState(0);
   const handleLogout = () => {
     logoutUser();
     navigation.reset({routes: [{name: 'Home'}]});
   };
+  useEffect(() => {
+    fetchUserName(auth.token);
+  }, [auth.token, fetchUserName]);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar title="Profile" />
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <UserSection />
+          <UserSection name={name} />
           <View style={styles.content}>
             <SegmentedControlTab
               values={['As Renter', 'As Vendor']}
@@ -65,13 +67,15 @@ const ProfileScreen = ({auth, logoutUser}) => {
               </View>
               <TouchableOpacity
                 style={styles.verifyButton}
-                onPress={() => navigation.navigate('Login')}>
+                onPress={() => navigation.navigate('VerifyAccount')}>
                 <Text style={styles.buttonText}>Verify My Account</Text>
               </TouchableOpacity>
             </View>
             {selectedIndex === 1 && (
               <>
-                <TouchableOpacity style={styles.addButton}>
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => navigation.navigate('AddItem')}>
                   <Text style={styles.addText}>+ Add Item</Text>
                 </TouchableOpacity>
                 <ProfileItem icon="all-inbox" name="My Items" />
@@ -83,11 +87,7 @@ const ProfileScreen = ({auth, logoutUser}) => {
             />
             <ProfileItem icon="settings" name="Settings" />
             <ProfileItem icon="help" name="Help Center" />
-            <ProfileItem
-              icon="info"
-              name="About RentGo"
-              onPress={() => console.log(auth)}
-            />
+            <ProfileItem icon="info" name="About RentGo" />
             <ProfileItem icon="logout" name="Logout" onPress={handleLogout} />
           </View>
         </ScrollView>
@@ -159,7 +159,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {auth: state.auth};
+  return {auth: state.auth, name: state.name};
 };
 
-export default connect(mapStateToProps, {logoutUser})(ProfileScreen);
+export default connect(mapStateToProps, {logoutUser, fetchUserName})(
+  ProfileScreen,
+);

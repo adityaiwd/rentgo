@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import theme from '../../styles/theme.style';
 
-const WelcomeSection = () => {
+const WelcomeSection = ({name}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -12,7 +12,7 @@ const WelcomeSection = () => {
         />
       </View>
       <View>
-        <Text style={styles.textLargeStyle}>Safira Eldi</Text>
+        <Text style={styles.textLargeStyle}>{name}</Text>
         <TouchableOpacity style={styles.profileButton}>
           <Text style={styles.textSmallStyle}>Show my profile</Text>
         </TouchableOpacity>

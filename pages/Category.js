@@ -27,9 +27,7 @@ const CategoryScreen = ({route}) => {
           withBackButton
         />
         <View style={styles.content}>
-          <SearchBar
-            style={{flex: 1, backgroundColor: 'red', height: '100%'}}
-          />
+          <SearchBar style={{flex: 1, height: '100%'}} />
           <ScrollView>
             <View style={styles.productContainer}>
               <ProductPageCard style={styles.product} />
@@ -75,7 +73,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     flex: 1,
-    backgroundColor: 'red',
     height: '100%',
   },
   product: {

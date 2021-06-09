@@ -15,6 +15,9 @@ import RegisterScreen from './pages/Register';
 import ImageSearchScreen from './pages/ImageSearch';
 import CheckoutScreen from './pages/Checkout';
 import PaymentScreen from './pages/Payment';
+import AddItemScreen from './pages/AddItem';
+import VerifyAccountScreen from './pages/VerifyAccount';
+import VerifyIDScreen from './pages/VerifyID';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
@@ -126,16 +129,23 @@ function HomeTabScreen() {
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-if (AsyncStorage.getItem('token')) {
-  setAuthorizationToken(AsyncStorage.getItem('token'));
+const getExistingToken = async () => {
+  const token = await AsyncStorage.getItem('token');
+  return token;
+};
+
+const existingToken = getExistingToken();
+
+if (existingToken._W) {
+  setAuthorizationToken(existingToken._W);
   store.dispatch({
     type: 'LOGIN_USER',
-    payload: AsyncStorage.getItem('token'),
+    payload: existingToken._W,
   });
 }
 
 export default function App() {
-  console.log(store.getState().auth);
+  console.log(store.getState().auth.isAuthenticated);
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -149,6 +159,9 @@ export default function App() {
           <Stack.Screen name="ImageSearch" component={ImageSearchScreen} />
           <Stack.Screen name="Checkout" component={CheckoutScreen} />
           <Stack.Screen name="Payment" component={PaymentScreen} />
+          <Stack.Screen name="AddItem" component={AddItemScreen} />
+          <Stack.Screen name="VerifyAccount" component={VerifyAccountScreen} />
+          <Stack.Screen name="VerifyID" component={VerifyIDScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

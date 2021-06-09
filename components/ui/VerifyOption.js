@@ -1,13 +1,13 @@
 import React from 'react';
-import {Text, StyleSheet, TouchableOpacity} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import theme from '../../styles/theme.style';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const ProfileItem = ({icon, name, onPress}) => {
+const VerifyOption = ({icon, option, onPress}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <MaterialIcons name={icon} color={theme.PRIMARY_BLACK} size={25} />
-      <Text style={styles.text}>{name}</Text>
+      <Text style={styles.option}>{option}</Text>
     </TouchableOpacity>
   );
 };
@@ -16,14 +16,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
-  text: {
-    fontFamily: theme.FONT_WEIGHT_SEMIBOLD,
+  option: {
     color: theme.PRIMARY_BLACK,
-    marginLeft: 25,
-    letterSpacing: 1.5,
+    fontFamily: theme.FONT_WEIGHT_SEMIBOLD,
+    marginLeft: 30,
   },
 });
 
-export default ProfileItem;
+export default VerifyOption;

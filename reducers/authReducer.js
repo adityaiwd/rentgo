@@ -1,6 +1,6 @@
 const initialState = {
   isAuthenticated: false,
-  token: '',
+  token: null,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
