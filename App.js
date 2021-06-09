@@ -26,7 +26,6 @@ import reducers from './reducers';
 import {setAuthorizationToken} from './actions';
 
 const store = createStore(reducers, applyMiddleware(thunk));
-const {isAuthenticated} = store.getState().auth;
 
 function ScannerScreen({navigation}) {
   return (
@@ -110,12 +109,14 @@ function HomeTabScreen() {
       />
       <Tab.Screen
         name="Profile"
-        component={isAuthenticated ? ProfileScreen : LoginScreen}
+        component={
+          store.getState().auth.isAuthenticated ? ProfileScreen : LoginScreen
+        }
         options={{
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="person-outline" color={color} size={size} />
           ),
-          tabBarVisible: isAuthenticated,
+          tabBarVisible: store.getState().auth.isAuthenticated,
         }}
       />
     </Tab.Navigator>
@@ -134,8 +135,7 @@ if (AsyncStorage.getItem('token')) {
 }
 
 export default function App() {
-  console.log(isAuthenticated);
-
+  console.log(store.getState().auth);
   return (
     <Provider store={store}>
       <NavigationContainer>

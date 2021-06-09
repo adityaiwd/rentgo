@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, {useState} from 'react';
 import {
   View,
@@ -16,7 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {loginRequest} from '../actions';
 import {connect} from 'react-redux';
 
-const LoginScreen = ({auth}) => {
+const LoginScreen = ({auth, loginRequest}) => {
   const navigation = useNavigation();
   const [loginData, setLoginData] = useState({
     email: '',
@@ -27,6 +28,7 @@ const LoginScreen = ({auth}) => {
     loginRequest(loginData);
     navigation.reset({routes: [{name: 'Home'}]});
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.flexOne}>

@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -19,13 +21,13 @@ import {useNavigation} from '@react-navigation/native';
 import {logoutUser} from '../actions';
 import {connect} from 'react-redux';
 
-const ProfileScreen = ({auth}) => {
+const ProfileScreen = ({auth, logoutUser}) => {
   const navigation = useNavigation();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const handleLogout = () => {
     logoutUser();
-    // navigation.reset({routes: [{name: 'Home'}]});
+    navigation.reset({routes: [{name: 'Home'}]});
   };
   return (
     <SafeAreaView style={styles.container}>

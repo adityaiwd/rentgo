@@ -6,7 +6,7 @@ import SearchBar from '../ui/SearchBar';
 const WelcomeSection = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.textLargeStyle}>Hai Safira,</Text>
+      <Text style={styles.textLargeStyle}>Hai User,</Text>
       <Text style={styles.textSmallStyle}>What items do you want to rent?</Text>
       <SearchBar />
     </View>
