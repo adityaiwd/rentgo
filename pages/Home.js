@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-shadow */
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -13,14 +14,19 @@ import WelcomeSection from '../components/sections/WelcomeSection';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
+import {fetchUserName} from '../actions';
+import {connect} from 'react-redux';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({name, auth, fetchUserName}) => {
+  useEffect(() => {
+    auth.isAuthenticated && fetchUserName(auth.token);
+  }, [auth.isAuthenticated, auth.token, fetchUserName]);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <WelcomeSection />
+          <WelcomeSection name={auth.isAuthenticated && name} />
           <View style={styles.content}>
             <ScrollView>
               <CategorySection />
@@ -52,4 +58,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+const mapStateToProps = state => {
+  return {auth: state.auth, name: state.name};
+};
+
+export default connect(mapStateToProps, {fetchUserName})(HomeScreen);

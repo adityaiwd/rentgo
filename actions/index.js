@@ -27,13 +27,17 @@ export const loginRequest = loginData => async dispatch => {
 };
 
 export const fetchUserName = token => async dispatch => {
-  const response = await rentgo.get('/user/profile', {
-    headers: {Authorization: `Bearer ${token}`},
-  });
-  dispatch({
-    type: 'SET_NAME',
-    payload: response.data.data.name,
-  });
+  try {
+    const response = await rentgo.get('/user/profile', {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    dispatch({
+      type: 'SET_NAME',
+      payload: response.data.data.name,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const logoutUser = () => async dispatch => {
@@ -42,4 +46,15 @@ export const logoutUser = () => async dispatch => {
   dispatch({
     type: 'LOGOUT_USER',
   });
+};
+
+export const searchProduct = query => async dispatch => {
+  try {
+    const response = await rentgo.get('/product', {
+      params: {name: query},
+    });
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
 };

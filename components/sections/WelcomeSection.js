@@ -1,14 +1,16 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import theme from '../../styles/theme.style';
-import SearchBar from '../ui/SearchBar';
+import SearchButton from '../ui/SearchButton';
 
-const WelcomeSection = () => {
+const WelcomeSection = ({name}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.textLargeStyle}>Hai User,</Text>
+      <Text style={styles.textLargeStyle}>
+        {name ? `Hi ${name},` : 'Welcome'}
+      </Text>
       <Text style={styles.textSmallStyle}>What items do you want to rent?</Text>
-      <SearchBar />
+      <SearchButton />
     </View>
   );
 };

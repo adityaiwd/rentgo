@@ -1,9 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import SplashScreen from 'react-native-splash-screen';
 import HomeScreen from './pages/Home';
 import ManageScreen from './pages/Manage';
 import ProfileScreen from './pages/Profile';
@@ -18,6 +19,7 @@ import PaymentScreen from './pages/Payment';
 import AddItemScreen from './pages/AddItem';
 import VerifyAccountScreen from './pages/VerifyAccount';
 import VerifyIDScreen from './pages/VerifyID';
+import SearchScreen from './pages/Search';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
@@ -129,23 +131,23 @@ function HomeTabScreen() {
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const getExistingToken = async () => {
-  const token = await AsyncStorage.getItem('token');
-  return token;
-};
-
-const existingToken = getExistingToken();
-
-if (existingToken._W) {
-  setAuthorizationToken(existingToken._W);
-  store.dispatch({
-    type: 'LOGIN_USER',
-    payload: existingToken._W,
-  });
-}
-
 export default function App() {
-  console.log(store.getState().auth.isAuthenticated);
+  useEffect(() => {
+    const getExistingToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        setAuthorizationToken(token);
+        store.dispatch({
+          type: 'LOGIN_USER',
+          payload: token,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getExistingToken();
+    SplashScreen.hide();
+  }, []);
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -162,6 +164,7 @@ export default function App() {
           <Stack.Screen name="AddItem" component={AddItemScreen} />
           <Stack.Screen name="VerifyAccount" component={VerifyAccountScreen} />
           <Stack.Screen name="VerifyID" component={VerifyIDScreen} />
+          <Stack.Screen name="Search" component={SearchScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
