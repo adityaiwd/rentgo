@@ -1,93 +1,120 @@
-import React, {useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-shadow */
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
   View,
   Text,
-  ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
-import CartPerVendor from '../components/ui/CartPerVendor';
-import CheckBox from '@react-native-community/checkbox';
+import CartItem from '../components/ui/CartItem';
+import DateButton from '../components/ui/DateButton';
+import BottomSheetDate from '../components/ui/BottomSheetDate';
+import NumberFormat from 'react-number-format';
 import {useNavigation} from '@react-navigation/native';
+import {connect} from 'react-redux';
+import {fetchCart} from '../actions';
+import moment from 'moment';
 
-const vendor1 = [
-  {
-    name: 'Canon EOS 90 D',
-    price: 200000,
-    period: 2,
-    image: require('../assets/images/product-camera.jpg'),
-  },
-  {
-    name: 'Lensa Fix Canon',
-    price: 75000,
-    period: 2,
-    image: require('../assets/images/product-lens.jpg'),
-  },
-];
-
-const vendor2 = [
-  {
-    name: 'Jas Pria',
-    price: 100000,
-    period: 1,
-    image: require('../assets/images/product-camera.jpg'),
-  },
-];
-
-const CartScreen = () => {
+const CartScreen = ({cart, auth, fetchCart}) => {
   const navigation = useNavigation();
-
-  const [toggleSelectAll, setToggleSelectAll] = useState(false);
+  const refRBSheetStart = useRef();
+  const refRBSheetEnd = useRef();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  useEffect(() => {
+    fetchCart(auth.token);
+  }, [fetchCart, auth.token]);
+  const handleCheckout = () => {
+    navigation.navigate('Checkout', {
+      cart_ids: cart.map(item => item.cart_id),
+      start_date: moment(startDate).format('YYYY-MM-DD 00:00:00'),
+      finish_date: moment(endDate).format('YYYY-MM-DD 00:00:00'),
+    });
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar title="Cart" noIcons withBackButton />
         <View style={styles.content}>
-          <ScrollView>
-            <CartPerVendor
-              vendorName="Kameravest"
-              startDate="20/05/2021"
-              endDate="22/05/2021"
-              itemData={vendor1}
-            />
-            <CartPerVendor
-              vendorName="Event Clothing"
-              startDate="22/05/2021"
-              endDate="22/05/2021"
-              itemData={vendor2}
-            />
-          </ScrollView>
+          <FlatList
+            data={cart}
+            key={'#'}
+            keyExtractor={cart => '#' + cart.cart_id}
+            renderItem={({item}) => (
+              <CartItem
+                image={require('../assets/images/product-camera.jpg')}
+                itemName={item.product_name}
+                vendor={item.product_vendor}
+                itemPrice={item.product_price}
+                amount={item.product_quantity}
+              />
+            )}
+          />
           <View style={styles.footer}>
+            <Text
+              style={{fontFamily: theme.FONT_WEIGHT_BOLD, marginBottom: 10}}>
+              Rent period
+            </Text>
             <View style={styles.footerHead}>
-              <View style={styles.selectAll}>
-                <CheckBox
-                  tintColors={{
-                    true: '#BCCF84',
-                    false: '#ccc',
-                  }}
-                  disabled={false}
-                  value={toggleSelectAll}
-                  onValueChange={newValue => setToggleSelectAll(newValue)}
+              <View style={styles.timePeriodContainer}>
+                <DateButton
+                  onPress={() => refRBSheetStart.current.open()}
+                  date={moment(startDate).format('DD/MM/YYYY')}
                 />
-                <Text style={styles.selectAllText}>Select All</Text>
+                <Text style={styles.toText}>to</Text>
+                <DateButton
+                  onPress={() => refRBSheetEnd.current.open()}
+                  date={moment(endDate).format('DD/MM/YYYY')}
+                />
               </View>
-              <Text style={styles.itemAmount}>2 items</Text>
+              <Text style={styles.itemAmount}>
+                {cart
+                  ? cart.length + ' ' + cart.length > 1
+                    ? 'items'
+                    : 'item'
+                  : 'no items'}
+              </Text>
             </View>
             <Text style={styles.subTotalText}>Subtotal</Text>
-            <Text style={styles.totalText}>Rp 275,000</Text>
+            <NumberFormat
+              value={
+                cart
+                  ? cart.reduce(
+                      (prev, cur) => prev + Number(cur.product_price),
+                      0,
+                    )
+                  : 0
+              }
+              renderText={text => <Text style={styles.totalText}>{text}</Text>}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'Rp '}
+            />
             <TouchableOpacity
               style={styles.checkOutButton}
-              onPress={() => navigation.navigate('Checkout')}>
+              onPress={handleCheckout}>
               <Text style={styles.checkOutText}>Checkout</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
+      <BottomSheetDate
+        innerRef={refRBSheetStart}
+        onDateChange={setStartDate}
+        date={startDate}
+      />
+      <BottomSheetDate
+        innerRef={refRBSheetEnd}
+        onDateChange={setEndDate}
+        date={endDate}
+      />
     </SafeAreaView>
   );
 };
@@ -167,6 +194,20 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: theme.FONT_WEIGHT_BOLD,
   },
+  timePeriodContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  toText: {
+    fontFamily: theme.FONT_WEIGHT_MEDIUM,
+    fontSize: 10,
+    marginHorizontal: 10,
+    color: theme.PRIMARY_BLACK,
+  },
 });
 
-export default CartScreen;
+const mapStateToProps = state => {
+  return {cart: state.cart, auth: state.auth};
+};
+
+export default connect(mapStateToProps, {fetchCart})(CartScreen);

@@ -3,7 +3,7 @@ import {StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
 import theme from '../../styles/theme.style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const BankTransferButton = ({bank}) => {
+const BankTransferButton = ({bank, onPress}) => {
   const switchLogo = x => {
     switch (x) {
       case 'BCA':
@@ -17,7 +17,7 @@ const BankTransferButton = ({bank}) => {
     }
   };
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={switchLogo(bank)} style={styles.logo} />
       <Text style={styles.text}>Bank {bank}</Text>
       <MaterialIcons

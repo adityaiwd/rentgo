@@ -19,10 +19,17 @@ import NumberFormat from 'react-number-format';
 import CheckoutCost from '../components/ui/CheckoutCost';
 import AddressSection from '../components/sections/AddressSection';
 import {useNavigation} from '@react-navigation/native';
+import {checkOut} from '../actions';
+import {connect} from 'react-redux';
 
-const PaymentScreen = ({}) => {
+const PaymentScreen = ({route, auth, checkOut}) => {
   const navigation = useNavigation();
-
+  const {checkOutData, totalPrice} = route.params;
+  const handlePayForRent = () => {
+    const data = {checkOutData, token: auth.token};
+    checkOut(data);
+    navigation.reset({routes: [{name: 'Home'}]});
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -30,7 +37,7 @@ const PaymentScreen = ({}) => {
         <View style={styles.content}>
           <PaymentSubtitle name="Digital Payment" amount={3} />
           <View style={styles.digiPayment}>
-            <DigiPaymentButton logo="ovo" />
+            <DigiPaymentButton logo="ovo" onPress={handlePayForRent} />
             <DigiPaymentButton logo="gopay" />
             <DigiPaymentButton logo="dana" />
           </View>
@@ -39,12 +46,12 @@ const PaymentScreen = ({}) => {
           <BankTransferButton bank="BNI" />
           <BankTransferButton bank="Mandiri" />
           <View style={styles.totalDetail}>
-            <CheckoutCost title="Total" cost={275000} />
+            <CheckoutCost title="Total" cost={totalPrice} />
             <CheckoutCost title="Shipping Cost" cost={10000} />
             <CheckoutCost title="Micro Insurance" cost={2000} />
             <Text style={styles.primaryText}>Grand Total</Text>
             <NumberFormat
-              value={287000}
+              value={totalPrice + 12000}
               renderText={text => <Text style={styles.cost}>{text}</Text>}
               displayType={'text'}
               thousandSeparator={true}
@@ -99,4 +106,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentScreen;
+const mapStateToProps = state => {
+  return {auth: state.auth};
+};
+
+export default connect(mapStateToProps, {checkOut})(PaymentScreen);

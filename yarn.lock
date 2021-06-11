@@ -6643,6 +6643,11 @@ react-native-date-picker@^3.3.1:
   resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-3.3.1.tgz#1f8b0712967c1e01257d32bab759aa64d6ffb601"
   integrity sha512-9784eFZtxGooIitLSpDRrjWuJzc6vSmQzubZTzLRxMDHIHt2wlAep3QxVMFKj1SSPXNBjM4vY8CbkJXFlYgSNQ==
 
+react-native-document-picker@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-5.1.0.tgz#37272c49b8b4d59174024c2605a85c11ebb26d3d"
+  integrity sha512-XMSDibp1GX0UMlVdsmAgjmf4/FJ+TCvVLWdKjV4QkTIO3TbDKsWSAS1+9jgUYcqIwQpO87SFBkvJ5cjOwx9vNA==
+
 react-native-dropdown-picker@^5.1.21:
   version "5.1.21"
   resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.1.21.tgz#f5bf602ef900d1c37cf2602206932cd1962ce75c"

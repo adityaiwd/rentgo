@@ -12,7 +12,6 @@ const CartPerVendor = ({vendorName, itemData}) => {
   const refRBSheet2 = useRef();
   const [date1, setDate1] = useState(new Date());
   const [date2, setDate2] = useState(new Date());
-  console.log(date1);
   return (
     <View style={styles.container}>
       <View style={styles.header}>

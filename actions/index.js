@@ -81,3 +81,41 @@ export const fetchLatestProduct = () => async dispatch => {
     });
   } catch (error) {}
 };
+
+export const addToCart = data => async dispatch => {
+  try {
+    await rentgo.post(
+      `/user/cart/create/${data.itemId}`,
+      {
+        quantity: data.itemAmount,
+      },
+      {
+        headers: {Authorization: `Bearer ${data.token}`},
+      },
+    );
+  } catch (error) {}
+};
+
+export const fetchCart = token => async dispatch => {
+  try {
+    const res = await rentgo.get('/user/cart', {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    dispatch({
+      type: 'FETCH_CART',
+      payload: res.data.data,
+    });
+  } catch (error) {}
+};
+
+export const checkOut = data => async dispatch => {
+  const {checkOutData, token} = data;
+  try {
+    const res = await rentgo.post('/user/checkout', checkOutData, {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};

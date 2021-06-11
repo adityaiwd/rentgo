@@ -15,21 +15,31 @@ import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
 import StarRate from '../components/ui/StarRate';
 import ItemCounter from '../components/ui/ItemCounter';
-import RentDate from '../components/ui/RentDate';
 import DetailSectionTitle from '../components/ui/DetailSectionTitle';
 import RentAction from '../components/ui/RentAction';
 import ReviewsSection from '../components/sections/ReviewsSection';
 import RelatedProductsSection from '../components/sections/RelatedProductsSection';
 import {connect} from 'react-redux';
-import {fetchProductDetail} from '../actions';
+import {fetchProductDetail, addToCart} from '../actions';
 
-const ProductDetailScreen = ({fetchProductDetail, route, detail}) => {
+const ProductDetailScreen = ({
+  fetchProductDetail,
+  addToCart,
+  route,
+  detail,
+  auth,
+}) => {
   const {itemId} = route.params;
   const [itemAmount, setItemAmount] = useState(1);
   const {name, vendor, price} = detail;
   useEffect(() => {
     fetchProductDetail(itemId);
   }, [fetchProductDetail, itemId]);
+  const handleAddToCart = () => {
+    const cartData = {itemId, itemAmount, token: auth.token};
+    auth.isAuthenticated && addToCart(cartData);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -78,7 +88,7 @@ const ProductDetailScreen = ({fetchProductDetail, route, detail}) => {
 
             <RelatedProductsSection />
           </ScrollView>
-          <RentAction />
+          <RentAction onCartPress={handleAddToCart} />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -170,9 +180,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {detail: state.detail};
+  return {detail: state.detail, auth: state.auth};
 };
 
-export default connect(mapStateToProps, {fetchProductDetail})(
+export default connect(mapStateToProps, {fetchProductDetail, addToCart})(
   ProductDetailScreen,
 );

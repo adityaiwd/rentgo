@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, StyleSheet, Image} from 'react-native';
 
-const DigiPaymentButton = ({logo}) => {
+const DigiPaymentButton = ({logo, onPress}) => {
   const switchStyle = x => {
     switch (x) {
       case 'ovo':
@@ -29,7 +29,7 @@ const DigiPaymentButton = ({logo}) => {
   };
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={switchLogo(logo)} style={switchStyle(logo)} />
     </TouchableOpacity>
   );

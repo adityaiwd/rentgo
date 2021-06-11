@@ -3,29 +3,17 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import theme from '../../styles/theme.style';
 import NumberFormat from 'react-number-format';
 import CartCounter from './CartCounter';
-import CheckBox from '@react-native-community/checkbox';
 
-const CartItem = ({image, itemName, itemPrice, timePeriod, noCheckBox}) => {
-  const [Counter, setCounter] = useState(1);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+const CartItem = ({image, itemName, vendor, itemPrice, amount}) => {
+  const [Counter, setCounter] = useState(amount);
   return (
     <View style={styles.container}>
-      {!noCheckBox && (
-        <CheckBox
-          tintColors={{
-            true: '#BCCF84',
-            false: '#ccc',
-          }}
-          disabled={false}
-          value={toggleCheckBox}
-          onValueChange={newValue => setToggleCheckBox(newValue)}
-        />
-      )}
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={image} />
       </View>
       <View>
         <Text style={styles.name}>{itemName}</Text>
+        <Text style={styles.vendor}>{vendor}</Text>
         <View style={styles.priceAndTime}>
           <NumberFormat
             value={itemPrice}
@@ -34,7 +22,7 @@ const CartItem = ({image, itemName, itemPrice, timePeriod, noCheckBox}) => {
             thousandSeparator={true}
             prefix={'Rp '}
           />
-          <Text style={styles.period}>for {timePeriod} days</Text>
+          {/* <Text style={styles.period}>for {timePeriod} days</Text> */}
         </View>
         <CartCounter
           value={Counter}
@@ -72,7 +60,6 @@ const styles = StyleSheet.create({
   priceAndTime: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginTop: 10,
   },
   price: {
     color: theme.PRIMARY_COLOR,
@@ -83,6 +70,11 @@ const styles = StyleSheet.create({
     fontFamily: theme.FONT_WEIGHT_MEDIUM,
     fontSize: 10,
     marginLeft: 5,
+  },
+  vendor: {
+    color: theme.PRIMARY_COLOR,
+    fontFamily: theme.FONT_WEIGHT_MEDIUM,
+    fontSize: theme.FONT_SIZE_SMALL,
   },
 });
 

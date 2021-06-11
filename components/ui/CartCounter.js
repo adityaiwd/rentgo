@@ -33,7 +33,7 @@ const CartCounter = ({value, increment, decrement}) => {
 const styles = StyleSheet.create({
   itemCounter: {
     flexDirection: 'row',
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
   },
   countContainer: {

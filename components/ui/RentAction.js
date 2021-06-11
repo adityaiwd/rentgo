@@ -3,13 +3,13 @@ import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import theme from '../../styles/theme.style';
 
-const RentAction = () => {
+const RentAction = ({onCartPress, onCheckoutPress}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.cart}>
+      <TouchableOpacity style={styles.cart} onPress={onCartPress}>
         <MaterialCommunityIcons name="cart-plus" color="#fff" size={30} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.checkOutButton}>
+      <TouchableOpacity style={styles.checkOutButton} onPress={onCheckoutPress}>
         <Text style={styles.checkOutText}>Check Out</Text>
       </TouchableOpacity>
     </View>
