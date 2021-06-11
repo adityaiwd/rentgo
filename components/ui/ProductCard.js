@@ -1,26 +1,33 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import NumberFormat from 'react-number-format';
 import theme from '../../styles/theme.style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
-const ProductCard = ({...rest}) => {
+const ProductCard = ({id, vendor, name, price, ...rest}) => {
   const navigation = useNavigation();
 
   return (
     <View {...rest}>
       <TouchableOpacity
         style={styles.container}
-        onPress={() => navigation.push('ProductDetail')}>
+        onPress={() => navigation.push('ProductDetail', {itemId: id})}>
         <Image
           resizeMode="cover"
           style={{width: '100%', height: 150}}
           source={require('../../assets/images/product-camera.jpg')}
         />
         <View style={styles.description}>
-          <Text style={styles.name}>Canon EOS 90 D</Text>
-          <Text style={styles.vendor}>Kameravest</Text>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.vendor}>{vendor}</Text>
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>Rp 75.000</Text>
+            <NumberFormat
+              value={price}
+              renderText={text => <Text style={styles.price}>{text}</Text>}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'Rp '}
+            />
             <Text style={styles.day}> / day</Text>
           </View>
           <View style={styles.rate}>

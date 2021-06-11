@@ -53,8 +53,31 @@ export const searchProduct = query => async dispatch => {
     const response = await rentgo.get('/product', {
       params: {name: query},
     });
-    console.log(response);
+    dispatch({
+      type: 'SEARCH_PRODUCT',
+      payload: response.data.data,
+    });
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fetchProductDetail = productId => async dispatch => {
+  try {
+    const res = await rentgo.get(`/product/detail/${productId}`);
+    dispatch({
+      type: 'FETCH_DETAIL',
+      payload: res.data.data,
+    });
+  } catch (error) {}
+};
+
+export const fetchLatestProduct = () => async dispatch => {
+  try {
+    const res = await rentgo.get('/product/latest');
+    dispatch({
+      type: 'FETCH_LATEST',
+      payload: res.data.data,
+    });
+  } catch (error) {}
 };

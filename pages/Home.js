@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -14,13 +14,20 @@ import WelcomeSection from '../components/sections/WelcomeSection';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
-import {fetchUserName} from '../actions';
+import {fetchUserName, fetchLatestProduct} from '../actions';
 import {connect} from 'react-redux';
 
-const HomeScreen = ({name, auth, fetchUserName}) => {
+const HomeScreen = ({
+  name,
+  auth,
+  fetchUserName,
+  fetchLatestProduct,
+  latest,
+}) => {
   useEffect(() => {
+    fetchLatestProduct();
     auth.isAuthenticated && fetchUserName(auth.token);
-  }, [auth.isAuthenticated, auth.token, fetchUserName]);
+  }, [auth.isAuthenticated, auth.token, fetchUserName, fetchLatestProduct]);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -30,8 +37,8 @@ const HomeScreen = ({name, auth, fetchUserName}) => {
           <View style={styles.content}>
             <ScrollView>
               <CategorySection />
-              <TrendingSection />
-              <LatestSection />
+              <TrendingSection data={latest} />
+              <LatestSection data={latest} />
             </ScrollView>
           </View>
         </ScrollView>
@@ -59,7 +66,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {auth: state.auth, name: state.name};
+  return {auth: state.auth, name: state.name, latest: state.latest};
 };
 
-export default connect(mapStateToProps, {fetchUserName})(HomeScreen);
+export default connect(mapStateToProps, {fetchUserName, fetchLatestProduct})(
+  HomeScreen,
+);

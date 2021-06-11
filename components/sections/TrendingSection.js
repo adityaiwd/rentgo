@@ -1,24 +1,32 @@
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-shadow */
 import React from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 import SectionTitle from '../ui/SectionTitle';
 import ProductCard from '../ui/ProductCard';
 
-const TrendingSection = () => {
+const TrendingSection = ({data}) => {
   return (
     <View style={styles.container}>
       <SectionTitle title="Trending" />
-      <ScrollView
-        style={styles.scroll}
+      <FlatList
+        data={data}
         horizontal
-        showsHorizontalScrollIndicator={false}>
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </ScrollView>
+        style={styles.scroll}
+        showsHorizontalScrollIndicator={false}
+        key={'#'}
+        ListFooterComponent={<View style={{width: 50}}></View>}
+        keyExtractor={data => '#' + data.id}
+        renderItem={({item}) => (
+          <ProductCard
+            id={item.id}
+            name={item.name}
+            vendor={item.vendor}
+            price={item.price}
+          />
+        )}
+      />
     </View>
   );
 };

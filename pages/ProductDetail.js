@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable no-shadow */
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -6,9 +7,9 @@ import {
   ImageBackground,
   View,
   Text,
-  TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import NumberFormat from 'react-number-format';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
@@ -19,12 +20,16 @@ import DetailSectionTitle from '../components/ui/DetailSectionTitle';
 import RentAction from '../components/ui/RentAction';
 import ReviewsSection from '../components/sections/ReviewsSection';
 import RelatedProductsSection from '../components/sections/RelatedProductsSection';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {connect} from 'react-redux';
+import {fetchProductDetail} from '../actions';
 
-import DatePicker from 'react-native-date-picker';
-import Modal from 'react-native-modal';
-const ProductDetailScreen = ({navigation}) => {
+const ProductDetailScreen = ({fetchProductDetail, route, detail}) => {
+  const {itemId} = route.params;
   const [itemAmount, setItemAmount] = useState(1);
+  const {name, vendor, price} = detail;
+  useEffect(() => {
+    fetchProductDetail(itemId);
+  }, [fetchProductDetail, itemId]);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -39,10 +44,16 @@ const ProductDetailScreen = ({navigation}) => {
               />
             </View>
             <View style={styles.description}>
-              <Text style={styles.name}>Canon EOS 90 D</Text>
-              <Text style={styles.vendor}>Kameravest</Text>
+              <Text style={styles.name}>{name}</Text>
+              <Text style={styles.vendor}>{vendor}</Text>
               <View style={styles.priceContainer}>
-                <Text style={styles.price}>Rp 75000</Text>
+                <NumberFormat
+                  value={price}
+                  renderText={text => <Text style={styles.price}>{text}</Text>}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix={'Rp '}
+                />
                 <Text style={styles.day}> / day</Text>
               </View>
               <StarRate />
@@ -53,7 +64,6 @@ const ProductDetailScreen = ({navigation}) => {
                 increment={() => setItemAmount(itemAmount + 1)}
                 decrement={() => setItemAmount(itemAmount - 1)}
               />
-              <RentDate />
             </View>
             <DetailSectionTitle title="Overview" withoutSeeAll />
             <Text style={styles.overviewDesc}>
@@ -159,4 +169,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductDetailScreen;
+const mapStateToProps = state => {
+  return {detail: state.detail};
+};
+
+export default connect(mapStateToProps, {fetchProductDetail})(
+  ProductDetailScreen,
+);
