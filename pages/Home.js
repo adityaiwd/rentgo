@@ -46,7 +46,7 @@ const HomeScreen = ({
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <WelcomeSection name={auth.isAuthenticated && name} />
+          <WelcomeSection name={auth.isAuthenticated && name.name} />
           <View style={styles.content}>
             <ScrollView>
               <CategorySection />

@@ -9,6 +9,7 @@ import cartReducer from './cartReducer';
 import acceptedReducer from './acceptedReducer';
 import onGoingReducer from './onGoingReducer';
 import completedReducer from './completedReducer';
+import imageSearchReducer from './imageSearchReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
   accepted: acceptedReducer,
   onGoing: onGoingReducer,
   completed: completedReducer,
+  imageSearch: imageSearchReducer,
 });

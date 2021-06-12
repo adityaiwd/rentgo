@@ -13,7 +13,7 @@ import BackgroundShape from '../assets/images/shapes.png';
 import BottomButton from '../components/ui/BottomButton';
 import {useNavigation} from '@react-navigation/native';
 
-const NotVerifiedScreen = () => {
+const NotAuthScreen = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
@@ -23,17 +23,16 @@ const NotVerifiedScreen = () => {
             source={require('../assets/images/stop.png')}
             style={{width: 200, height: 200}}
           />
-          <Text style={styles.mainText}>Verify Your Account</Text>
+          <Text style={styles.mainText}>Not Authenticated</Text>
           <Text style={styles.description}>
-            Oops, looks like your account is not verified! Please verify your
-            account to proceed with this step.
+            Oops, looks like your account is not logged in! Please login with
+            your existing account or create an account to proceed with this
+            step.
           </Text>
         </View>
         <View style={{marginHorizontal: 30, marginBottom: 30}}>
-          <BottomButton
-            color="2"
-            onPress={() => navigation.navigate('VerifyAccount')}>
-            Verify Account
+          <BottomButton color="2" onPress={() => navigation.navigate('Login')}>
+            Login to Account
           </BottomButton>
         </View>
       </ImageBackground>
@@ -78,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotVerifiedScreen;
+export default NotAuthScreen;

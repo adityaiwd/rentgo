@@ -7,47 +7,60 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  Image,
   ImageBackground,
 } from 'react-native';
-import UserSection from '../components/sections/UserSection';
 import TopBar from '../components/sections/TopBar';
-import ProfileItem from '../components/ui/ProfileItem';
 import theme from '../styles/theme.style';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
 import BackgroundShape from '../assets/images/shapes.png';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import BottomButton from '../components/ui/BottomButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DocumentPicker from 'react-native-document-picker';
 import {RNCamera} from 'react-native-camera';
+import FormData from 'form-data';
+import {connect} from 'react-redux';
+import {imageSearchQuery} from '../actions';
+import {launchImageLibrary} from 'react-native-image-picker';
 
-const ImageSearchScreen = () => {
+const ImageSearchScreen = ({imageSearchQuery}) => {
   const navigation = useNavigation();
+  let imageData = new FormData();
   let camera;
   const takePicture = async function (camera) {
     const options = {quality: 0.5, base64: true};
     const data = await camera.takePictureAsync(options);
     console.log(data.uri);
   };
+  var options = {
+    title: 'Select Image',
+    customButtons: [
+      {
+        name: 'customOptionKey',
+        title: 'Choose file from Custom Option',
+      },
+    ],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+  };
   const handleUploadImage = async () => {
     try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
+      launchImageLibrary(options, res => {
+        const {uri, fileName} = res.assets[0];
+        const uriParts = uri.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+
+        imageData.append('furniture_image', {
+          uri,
+          type: `image/${fileType}`,
+          name: fileName,
+        });
+        imageSearchQuery(imageData);
+        navigation.navigate('Search');
       });
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size,
-      );
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
-      } else {
-        throw err;
-      }
-    }
+    } catch (err) {}
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -133,4 +146,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageSearchScreen;
+const mapStateToProps = state => {
+  return {};
+};
+
+export default connect(mapStateToProps, {imageSearchQuery})(ImageSearchScreen);

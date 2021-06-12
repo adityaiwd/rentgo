@@ -19,10 +19,13 @@ import PaymentScreen from './pages/Payment';
 import AddItemScreen from './pages/AddItem';
 import VerifyAccountScreen from './pages/VerifyAccount';
 import VerifyIDScreen from './pages/VerifyID';
+import NotVerifiedScreen from './pages/NotVerified';
 import SearchScreen from './pages/Search';
 import OvoPaymentScreen from './pages/OvoPayment';
 import SuccessPaymentScreen from './pages/SuccessPayment';
 import RateScreen from './pages/Rate';
+import SuccessVerifyScreen from './pages/SuccessVerify';
+import NotAuthScreen from './pages/NotAuth';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
@@ -66,7 +69,13 @@ function HomeTabScreen() {
       />
       <Tab.Screen
         name="Manage"
-        component={ManageScreen}
+        component={
+          store.getState().auth.isAuthenticated
+            ? store.getState().name.is_verified
+              ? ManageScreen
+              : NotVerifiedScreen
+            : NotAuthScreen
+        }
         options={{
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
@@ -75,6 +84,7 @@ function HomeTabScreen() {
               size={size}
             />
           ),
+          tabBarVisible: store.getState().name.is_verified,
         }}
       />
       <Tab.Screen
@@ -172,6 +182,9 @@ export default function App() {
           <Stack.Screen name="Search" component={SearchScreen} />
           <Stack.Screen name="OvoPayment" component={OvoPaymentScreen} />
           <Stack.Screen name="Rate" component={RateScreen} />
+          <Stack.Screen name="NotVerified" component={NotVerifiedScreen} />
+          <Stack.Screen name="SuccessVerify" component={SuccessVerifyScreen} />
+          <Stack.Screen name="NotAuth" component={NotAuthScreen} />
           <Stack.Screen
             name="SuccessPayment"
             component={SuccessPaymentScreen}

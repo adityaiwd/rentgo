@@ -13,27 +13,30 @@ import BackgroundShape from '../assets/images/shapes.png';
 import BottomButton from '../components/ui/BottomButton';
 import {useNavigation} from '@react-navigation/native';
 
-const NotVerifiedScreen = () => {
+const SuccessVerifyScreen = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <View style={styles.bodyContainer}>
-          <Image
-            source={require('../assets/images/stop.png')}
-            style={{width: 200, height: 200}}
-          />
-          <Text style={styles.mainText}>Verify Your Account</Text>
+          <Image source={require('../assets/images/id-verified.png')} />
+          <Text style={styles.mainText}>
+            Identity Card Verification Success
+          </Text>
           <Text style={styles.description}>
-            Oops, looks like your account is not verified! Please verify your
-            account to proceed with this step.
+            Thank you for verifying your identity card
           </Text>
         </View>
         <View style={{marginHorizontal: 30, marginBottom: 30}}>
           <BottomButton
             color="2"
-            onPress={() => navigation.navigate('VerifyAccount')}>
-            Verify Account
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Home'}],
+              })
+            }>
+            Done
           </BottomButton>
         </View>
       </ImageBackground>
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     marginTop: 30,
+    textAlign: 'center',
   },
   description: {
     fontFamily: theme.FONT_WEIGHT_LIGHT,
@@ -78,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotVerifiedScreen;
+export default SuccessVerifyScreen;

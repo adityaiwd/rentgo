@@ -51,7 +51,7 @@ const CheckoutScreen = ({route, cart, name}) => {
           <ScrollView>
             <CheckoutSubtitle title="Address" sideButton="Change" />
             <AddressSection
-              receiver={name}
+              receiver={name.name}
               phoneNumber="081228302018"
               location="Home"
               address="Perum Bumi Mangli Permai Blok BD 18, Mangli, Kaliwates, Jember, Jawa Timur, 68136"

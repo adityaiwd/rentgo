@@ -99,7 +99,8 @@ const CartScreen = ({cart, auth, fetchCart}) => {
             />
             <TouchableOpacity
               style={styles.checkOutButton}
-              onPress={handleCheckout}>
+              onPress={handleCheckout}
+              disabled={!cart ? true : false}>
               <Text style={styles.checkOutText}>Checkout</Text>
             </TouchableOpacity>
           </View>

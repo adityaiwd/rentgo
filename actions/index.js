@@ -3,6 +3,7 @@ import rentgo from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+
 // import {useNavigation} from '@react-navigation/native';
 
 export const setAuthorizationToken = token => {
@@ -33,8 +34,8 @@ export const fetchUserName = token => async dispatch => {
       headers: {Authorization: `Bearer ${token}`},
     });
     dispatch({
-      type: 'SET_NAME',
-      payload: response.data.data.name,
+      type: 'SET_PROFILE',
+      payload: response.data.data,
     });
   } catch (error) {
     console.log(error);
@@ -177,4 +178,30 @@ export const sendReview = data => async dispatch => {
       text2: 'Item successfully reviewed',
     });
   } catch (error) {}
+};
+
+export const imageSearchQuery = image => async dispatch => {
+  try {
+    const res = await axios.post('http://34.101.161.26:8000/predict', image, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
+    dispatch({
+      type: 'IMAGE_SEARCH',
+      payload: res.data.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendVerifyRequest = data => async dispatch => {
+  console.log(JSON.stringify(data));
+  try {
+    const res = await rentgo.put('/user/profile/verification', data.body, {
+      headers: {Authorization: `Bearer ${data.token}`},
+    });
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
 };

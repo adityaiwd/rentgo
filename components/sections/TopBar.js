@@ -4,8 +4,9 @@ import theme from '../../styles/theme.style';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
+import {connect} from 'react-redux';
 
-const TopBar = ({title, cartOnly, withBackButton, noIcons}) => {
+const TopBar = ({title, cartOnly, withBackButton, noIcons, name, auth}) => {
   const navigation = useNavigation();
 
   return (
@@ -43,7 +44,16 @@ const TopBar = ({title, cartOnly, withBackButton, noIcons}) => {
                 </TouchableOpacity>
               </>
             )}
-            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(
+                  auth.isAuthenticated
+                    ? name.is_verified
+                      ? 'Cart'
+                      : 'NotVerified'
+                    : 'NotAuth',
+                )
+              }>
               <MaterialCommunityIcons
                 name="cart-outline"
                 color="#fff"
@@ -83,4 +93,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopBar;
+const mapStateToProps = state => {
+  return {name: state.name, auth: state.auth};
+};
+
+export default connect(mapStateToProps, {})(TopBar);

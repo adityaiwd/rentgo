@@ -38,7 +38,7 @@ const ProfileScreen = ({auth, name, logoutUser, fetchUserName}) => {
         <ImageBackground source={BackgroundShape} style={styles.shape}>
           <TopBar title="Profile" />
           <ScrollView contentContainerStyle={{flexGrow: 1}}>
-            <UserSection name={name} />
+            <UserSection name={name.name} />
             <View style={styles.content}>
               <SegmentedControlTab
                 values={['As Renter', 'As Vendor']}
@@ -53,28 +53,33 @@ const ProfileScreen = ({auth, name, logoutUser, fetchUserName}) => {
                 firstTabStyle={{
                   borderRightWidth: 0,
                 }}
-                tabsContainerStyle={{borderColor: theme.PRIMARY_COLOR}}
+                tabsContainerStyle={{
+                  borderColor: theme.PRIMARY_COLOR,
+                  marginBottom: 20,
+                }}
                 tabStyle={styles.tabStyle}
                 selectedIndex={selectedIndex}
                 onTabPress={index => setSelectedIndex(index)}
               />
-              <View style={styles.verificationContainer}>
-                <View style={styles.verifHeader}>
-                  <Text style={styles.text}>
-                    Why verification is mandatory?
-                  </Text>
-                  <MaterialIcons
-                    name="info"
-                    color={theme.PRIMARY_COLOR}
-                    size={25}
-                  />
+              {!name.is_verified && (
+                <View style={styles.verificationContainer}>
+                  <View style={styles.verifHeader}>
+                    <Text style={styles.text}>
+                      Why verification is mandatory?
+                    </Text>
+                    <MaterialIcons
+                      name="info"
+                      color={theme.PRIMARY_COLOR}
+                      size={25}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.verifyButton}
+                    onPress={() => navigation.navigate('VerifyAccount')}>
+                    <Text style={styles.buttonText}>Verify My Account</Text>
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={styles.verifyButton}
-                  onPress={() => navigation.navigate('VerifyAccount')}>
-                  <Text style={styles.buttonText}>Verify My Account</Text>
-                </TouchableOpacity>
-              </View>
+              )}
               {selectedIndex === 1 && (
                 <>
                   <TouchableOpacity

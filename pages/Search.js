@@ -20,16 +20,17 @@ import ProductPageCard from '../components/ui/ProductPageCard';
 import {connect} from 'react-redux';
 import {searchProduct} from '../actions';
 
-const SearchScreen = ({searchProduct, search}) => {
-  const navigation = useNavigation();
+const SearchScreen = ({searchProduct, search, imageSearch}) => {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState([]);
   const handleSearch = () => {
     searchProduct(query);
   };
   useEffect(() => {
+    imageSearch && searchProduct(imageSearch);
+    imageSearch && setQuery(imageSearch);
     search && setResult(search);
-  }, [search]);
+  }, [search, imageSearch, searchProduct]);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {search: state.search};
+  return {search: state.search, imageSearch: state.imageSearch};
 };
 
 export default connect(mapStateToProps, {searchProduct})(SearchScreen);

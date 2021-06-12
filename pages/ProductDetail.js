@@ -21,6 +21,7 @@ import ReviewsSection from '../components/sections/ReviewsSection';
 import RelatedProductsSection from '../components/sections/RelatedProductsSection';
 import {connect} from 'react-redux';
 import {fetchProductDetail, addToCart} from '../actions';
+import {useNavigation} from '@react-navigation/native';
 
 const ProductDetailScreen = ({
   fetchProductDetail,
@@ -28,8 +29,10 @@ const ProductDetailScreen = ({
   route,
   detail,
   auth,
+  nameVerify,
 }) => {
   const {itemId} = route.params;
+  const navigation = useNavigation();
   const [itemAmount, setItemAmount] = useState(1);
   const {name, vendor, price, overview} = detail;
   useEffect(() => {
@@ -37,7 +40,11 @@ const ProductDetailScreen = ({
   }, [fetchProductDetail, itemId]);
   const handleAddToCart = () => {
     const cartData = {itemId, itemAmount, token: auth.token};
-    auth.isAuthenticated && addToCart(cartData);
+    auth.isAuthenticated
+      ? nameVerify.is_verified
+        ? addToCart(cartData)
+        : navigation.navigate('NotVerified')
+      : navigation.navigate('NotAuth');
   };
 
   return (
@@ -173,7 +180,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {detail: state.detail, auth: state.auth};
+  return {detail: state.detail, auth: state.auth, nameVerify: state.name};
 };
 
 export default connect(mapStateToProps, {fetchProductDetail, addToCart})(
