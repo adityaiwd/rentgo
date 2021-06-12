@@ -5,35 +5,27 @@ import CourierButton from '../ui/CourierButton';
 import BottomSheetButton from '../ui/BottomSheetButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import theme from '../../styles/theme.style';
-const RentedItems = [
-  {
-    name: 'Canon EOS 90 D',
-    vendor: 'Kameravest',
-    price: 200000,
-    expire: '20 May 2021',
-    image: require('../../assets/images/product-camera.jpg'),
-  },
-  {
-    name: 'Lensa Fix Canon',
-    vendor: 'Kameravest',
-    price: 75000,
-    expire: '20 May 2021',
-    image: require('../../assets/images/product-lens.jpg'),
-  },
-];
+import moment from 'moment';
 
-const OnGoingSection = () => {
+const OnGoingSection = ({data}) => {
   const refRBSheet = useRef();
   return (
     <View style={styles.container}>
-      <TransactionPerVendor
-        transactionID="QZK023"
-        transactionDate="19 May 2021 10:19 PM"
-        buttonTitle="Return Method"
-        buttonText="Pick Method"
-        items={RentedItems}
-        onHeaderButtonPress={() => refRBSheet.current.open()}
-      />
+      {data &&
+        data.map(order => (
+          <TransactionPerVendor
+            key={order.receipt_code}
+            receiptCode={order.receipt_code}
+            transactionID={order.receipt_code.substr(
+              order.receipt_code.length - 6,
+            )}
+            transactionDate={moment(order.start_date).format('DD MMM YYYY')}
+            endDate={moment(order.finish_date).format('DD MMM YYYY')}
+            buttonTitle="Return Method"
+            buttonText="Pick Method"
+            onHeaderButtonPress={() => refRBSheet.current.open()}
+          />
+        ))}
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}

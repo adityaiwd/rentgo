@@ -14,12 +14,14 @@ const TransactionHeader = ({
   return (
     <View style={styles.container}>
       <TransactionCode code={code} date={date} />
-      <MiniButton
-        onPress={onButtonPress}
-        title={buttonTitle}
-        outlined={outlinedButton}>
-        {buttonText}
-      </MiniButton>
+      {buttonText && (
+        <MiniButton
+          onPress={onButtonPress}
+          title={buttonTitle}
+          outlined={outlinedButton}>
+          {buttonText}
+        </MiniButton>
+      )}
     </View>
   );
 };

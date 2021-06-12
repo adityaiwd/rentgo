@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import NumberFormat from 'react-number-format';

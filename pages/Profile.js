@@ -20,6 +20,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {logoutUser, fetchUserName} from '../actions';
 import {connect} from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 const ProfileScreen = ({auth, name, logoutUser, fetchUserName}) => {
   const navigation = useNavigation();
@@ -32,67 +33,80 @@ const ProfileScreen = ({auth, name, logoutUser, fetchUserName}) => {
     fetchUserName(auth.token);
   }, [auth.token, fetchUserName]);
   return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground source={BackgroundShape} style={styles.shape}>
-        <TopBar title="Profile" />
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <UserSection name={name} />
-          <View style={styles.content}>
-            <SegmentedControlTab
-              values={['As Renter', 'As Vendor']}
-              borderRadius={25}
-              tabTextStyle={{
-                fontFamily: theme.FONT_WEIGHT_SEMIBOLD,
-                color: theme.PRIMARY_COLOR,
-              }}
-              activeTabStyle={{
-                backgroundColor: theme.PRIMARY_COLOR,
-              }}
-              firstTabStyle={{
-                borderRightWidth: 0,
-              }}
-              tabsContainerStyle={{borderColor: theme.PRIMARY_COLOR}}
-              tabStyle={styles.tabStyle}
-              selectedIndex={selectedIndex}
-              onTabPress={index => setSelectedIndex(index)}
-            />
-            <View style={styles.verificationContainer}>
-              <View style={styles.verifHeader}>
-                <Text style={styles.text}>Why verification is mandatory?</Text>
-                <MaterialIcons
-                  name="info"
-                  color={theme.PRIMARY_COLOR}
-                  size={25}
-                />
-              </View>
-              <TouchableOpacity
-                style={styles.verifyButton}
-                onPress={() => navigation.navigate('VerifyAccount')}>
-                <Text style={styles.buttonText}>Verify My Account</Text>
-              </TouchableOpacity>
-            </View>
-            {selectedIndex === 1 && (
-              <>
+    <>
+      <SafeAreaView style={styles.container}>
+        <ImageBackground source={BackgroundShape} style={styles.shape}>
+          <TopBar title="Profile" />
+          <ScrollView contentContainerStyle={{flexGrow: 1}}>
+            <UserSection name={name} />
+            <View style={styles.content}>
+              <SegmentedControlTab
+                values={['As Renter', 'As Vendor']}
+                borderRadius={25}
+                tabTextStyle={{
+                  fontFamily: theme.FONT_WEIGHT_SEMIBOLD,
+                  color: theme.PRIMARY_COLOR,
+                }}
+                activeTabStyle={{
+                  backgroundColor: theme.PRIMARY_COLOR,
+                }}
+                firstTabStyle={{
+                  borderRightWidth: 0,
+                }}
+                tabsContainerStyle={{borderColor: theme.PRIMARY_COLOR}}
+                tabStyle={styles.tabStyle}
+                selectedIndex={selectedIndex}
+                onTabPress={index => setSelectedIndex(index)}
+              />
+              <View style={styles.verificationContainer}>
+                <View style={styles.verifHeader}>
+                  <Text style={styles.text}>
+                    Why verification is mandatory?
+                  </Text>
+                  <MaterialIcons
+                    name="info"
+                    color={theme.PRIMARY_COLOR}
+                    size={25}
+                  />
+                </View>
                 <TouchableOpacity
-                  style={styles.addButton}
-                  onPress={() => navigation.navigate('AddItem')}>
-                  <Text style={styles.addText}>+ Add Item</Text>
+                  style={styles.verifyButton}
+                  onPress={() => navigation.navigate('VerifyAccount')}>
+                  <Text style={styles.buttonText}>Verify My Account</Text>
                 </TouchableOpacity>
-                <ProfileItem icon="all-inbox" name="My Items" />
-              </>
-            )}
-            <ProfileItem
-              icon="account-balance-wallet"
-              name="Bank Information"
-            />
-            <ProfileItem icon="settings" name="Settings" />
-            <ProfileItem icon="help" name="Help Center" />
-            <ProfileItem icon="info" name="About RentGo" />
-            <ProfileItem icon="logout" name="Logout" onPress={handleLogout} />
-          </View>
-        </ScrollView>
-      </ImageBackground>
-    </SafeAreaView>
+              </View>
+              {selectedIndex === 1 && (
+                <>
+                  <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={() => navigation.navigate('AddItem')}>
+                    <Text style={styles.addText}>+ Add Item</Text>
+                  </TouchableOpacity>
+                  <ProfileItem icon="all-inbox" name="My Items" />
+                </>
+              )}
+              <ProfileItem
+                icon="account-balance-wallet"
+                name="Bank Information"
+              />
+              <ProfileItem icon="settings" name="Settings" />
+              <ProfileItem
+                icon="help"
+                name="Help Center"
+                onPress={() =>
+                  Toast.show({
+                    text1: 'Hello',
+                    text2: 'This is some something 👋',
+                  })
+                }
+              />
+              <ProfileItem icon="info" name="About RentGo" />
+              <ProfileItem icon="logout" name="Logout" onPress={handleLogout} />
+            </View>
+          </ScrollView>
+        </ImageBackground>
+      </SafeAreaView>
+    </>
   );
 };
 

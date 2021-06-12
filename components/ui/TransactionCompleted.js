@@ -7,7 +7,7 @@ import rentgo from '../../api';
 import {connect} from 'react-redux';
 import NumberFormat from 'react-number-format';
 
-const TransactionPerVendor = ({
+const TransactionCompleted = ({
   transactionID,
   transactionDate,
   buttonTitle,
@@ -22,33 +22,34 @@ const TransactionPerVendor = ({
   const [transactionItems, setTransactionItems] = useState([]);
   useEffect(() => {
     const fetchTransactionItems = async () => {
-      const res = await rentgo.get(`/user/invoice/product/${receiptCode}`, {
-        headers: {Authorization: `Bearer ${auth.token}`},
-      });
+      const res = await rentgo.get(
+        `/user/invoice/completed/product/${receiptCode}`,
+        {
+          headers: {Authorization: `Bearer ${auth.token}`},
+        },
+      );
       setTransactionItems(res.data.data);
     };
     fetchTransactionItems();
   }, [auth.token, receiptCode]);
   return (
     <View style={styles.container}>
-      <TransactionHeader
-        code={transactionID}
-        date={transactionDate}
-        buttonTitle={buttonTitle}
-        buttonText={buttonText}
-        outlinedButton={outlinedButton}
-        onButtonPress={onHeaderButtonPress}
-      />
-      {transactionItems.map(item => (
-        <TransactionItem
-          key={item.invoice_product_id}
-          image={require('../../assets/images/product-camera.jpg')}
-          name={item.product_name}
-          vendor={item.product_vendor}
-          price={item.product_price}
-          expiration={endDate}
-        />
-      ))}
+      <TransactionHeader code={transactionID} date={transactionDate} />
+      {transactionItems.map(
+        item =>
+          !item.is_reviewed && (
+            <TransactionItem
+              key={item.invoice_product_id}
+              idInvoiceProduct={item.invoice_product_id}
+              image={require('../../assets/images/product-camera.jpg')}
+              name={item.product_name}
+              vendor={item.product_vendor}
+              price={item.product_price}
+              expiration={endDate}
+              withRateButton
+            />
+          ),
+      )}
       {withTotal && (
         <>
           <Text style={styles.totalText}>Total</Text>
@@ -89,4 +90,4 @@ const mapStateToProps = state => {
   return {auth: state.auth};
 };
 
-export default connect(mapStateToProps, {})(TransactionPerVendor);
+export default connect(mapStateToProps, {})(TransactionCompleted);

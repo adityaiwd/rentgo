@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+/* eslint-disable no-shadow */
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   ImageBackground,
   View,
-  Text,
-  TouchableOpacity,
 } from 'react-native';
 import TopBar from '../components/sections/TopBar';
 import ToPaySection from '../components/sections/ToPaySection';
@@ -14,30 +13,55 @@ import OnGoingSection from '../components/sections/OnGoingSection';
 import CompletedSection from '../components/sections/CompletedSection';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import {connect} from 'react-redux';
+import {
+  fetchInvoiceAccepted,
+  fetchInvoiceOnGoing,
+  fetchInvoiceCompleted,
+} from '../actions';
 
-const ManageScreen = ({navigation}) => {
+const ManageScreen = ({
+  fetchInvoiceAccepted,
+  fetchInvoiceOnGoing,
+  fetchInvoiceCompleted,
+  auth,
+  accepted,
+  onGoing,
+  completed,
+}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  useEffect(() => {
+    fetchInvoiceAccepted(auth.token);
+    fetchInvoiceOnGoing(auth.token);
+    fetchInvoiceCompleted(auth.token);
+  }, [
+    fetchInvoiceAccepted,
+    auth.token,
+    fetchInvoiceOnGoing,
+    selectedIndex,
+    fetchInvoiceCompleted,
+  ]);
   const renderSwitch = index => {
     switch (index) {
       case 0:
-        return <ToPaySection />;
+        return <ToPaySection data={accepted} />;
       case 1:
-        return <OnGoingSection />;
+        return <OnGoingSection data={onGoing} />;
       case 2:
-        return <CompletedSection />;
+        return <CompletedSection data={completed} />;
       default:
         return <></>;
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
         <TopBar title="Manage" />
         <View style={styles.content}>
           <SegmentedControlTab
-            values={['To Pay', 'On Going', 'Completed']}
+            values={['Order', 'On Going', 'Completed']}
             borderRadius={20}
             tabTextStyle={{
               fontFamily: theme.FONT_WEIGHT_MEDIUM,
@@ -94,4 +118,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ManageScreen;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+    accepted: state.accepted,
+    onGoing: state.onGoing,
+    completed: state.completed,
+  };
+};
+
+export default connect(mapStateToProps, {
+  fetchInvoiceAccepted,
+  fetchInvoiceOnGoing,
+  fetchInvoiceCompleted,
+})(ManageScreen);

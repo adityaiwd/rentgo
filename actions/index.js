@@ -2,6 +2,7 @@
 import rentgo from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 // import {useNavigation} from '@react-navigation/native';
 
 export const setAuthorizationToken = token => {
@@ -82,6 +83,16 @@ export const fetchLatestProduct = () => async dispatch => {
   } catch (error) {}
 };
 
+export const fetchTrendingProduct = () => async dispatch => {
+  try {
+    const res = await rentgo.get('/product/trending');
+    dispatch({
+      type: 'FETCH_TRENDING',
+      payload: res.data.data,
+    });
+  } catch (error) {}
+};
+
 export const addToCart = data => async dispatch => {
   try {
     await rentgo.post(
@@ -118,4 +129,52 @@ export const checkOut = data => async dispatch => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fetchInvoiceAccepted = token => async dispatch => {
+  try {
+    const res = await rentgo.get('/user/invoice/accepted', {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    dispatch({
+      type: 'FETCH_INVOICE_ACCEPTED',
+      payload: res.data.data,
+    });
+  } catch (error) {}
+};
+
+export const fetchInvoiceOnGoing = token => async dispatch => {
+  try {
+    const res = await rentgo.get('/user/invoice/on_going', {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    dispatch({
+      type: 'FETCH_INVOICE_ON_GOING',
+      payload: res.data.data,
+    });
+  } catch (error) {}
+};
+
+export const fetchInvoiceCompleted = token => async dispatch => {
+  try {
+    const res = await rentgo.get('/user/invoice/completed', {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    dispatch({
+      type: 'FETCH_INVOICE_COMPLETED',
+      payload: res.data.data,
+    });
+  } catch (error) {}
+};
+
+export const sendReview = data => async dispatch => {
+  try {
+    const res = await rentgo.put(`/user/review/create/${data.id}`, data.body, {
+      headers: {Authorization: `Bearer ${data.token}`},
+    });
+    Toast.show({
+      text1: 'Review Sent',
+      text2: 'Item successfully reviewed',
+    });
+  } catch (error) {}
 };

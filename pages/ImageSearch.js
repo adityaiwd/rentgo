@@ -17,8 +17,9 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import BackgroundShape from '../assets/images/shapes.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import BottomButton from '../components/ui/BottomButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import DocumentPicker from 'react-native-document-picker';
 import {RNCamera} from 'react-native-camera';
 
 const ImageSearchScreen = () => {
@@ -28,6 +29,25 @@ const ImageSearchScreen = () => {
     const options = {quality: 0.5, base64: true};
     const data = await camera.takePictureAsync(options);
     console.log(data.uri);
+  };
+  const handleUploadImage = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size,
+      );
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -75,6 +95,9 @@ const ImageSearchScreen = () => {
               />
             </TouchableOpacity>
           </View>
+          <BottomButton color="2" onPress={handleUploadImage}>
+            Upload Image
+          </BottomButton>
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -89,6 +112,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'column',
+    marginTop: 100,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 30,

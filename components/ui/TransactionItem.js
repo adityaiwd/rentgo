@@ -1,8 +1,19 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import theme from '../../styles/theme.style';
+import NumberFormat from 'react-number-format';
+import {useNavigation} from '@react-navigation/native';
 
-const TransactionItem = ({image, name, vendor, price, expiration}) => {
+const TransactionItem = ({
+  image,
+  name,
+  vendor,
+  price,
+  expiration,
+  idInvoiceProduct,
+  withRateButton,
+}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -11,9 +22,24 @@ const TransactionItem = ({image, name, vendor, price, expiration}) => {
       <View>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.vendor}>{vendor}</Text>
-        <Text style={styles.price}>Rp {price}</Text>
+        <NumberFormat
+          value={price}
+          renderText={text => <Text style={styles.price}>{text}</Text>}
+          displayType={'text'}
+          thousandSeparator={true}
+          prefix={'Rp '}
+        />
         <Text style={styles.expiration}>Rented until {expiration}</Text>
       </View>
+      {withRateButton && (
+        <TouchableOpacity
+          style={styles.rateButton}
+          onPress={() =>
+            navigation.navigate('Rate', {name, vendor, idInvoiceProduct})
+          }>
+          <Text style={styles.rateText}>Rate</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -60,6 +86,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     padding: 5,
     borderRadius: 5,
+  },
+  rateButton: {
+    backgroundColor: theme.PRIMARY_COLOR,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+    marginLeft: 'auto',
+  },
+  rateText: {
+    fontFamily: theme.FONT_WEIGHT_SEMIBOLD,
+    color: '#fff',
+    fontSize: theme.FONT_SIZE_SMALL,
   },
 });
 

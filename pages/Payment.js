@@ -1,23 +1,20 @@
-import React, {useState} from 'react';
+/* eslint-disable no-shadow */
+import React from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   ImageBackground,
   View,
   Text,
-  ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
-import CartItem from '../components/ui/CartItem';
 import PaymentSubtitle from '../components/ui/PaymentSubtitle';
 import DigiPaymentButton from '../components/ui/DigiPaymentButton';
 import BankTransferButton from '../components/ui/BankTransferButton';
 import NumberFormat from 'react-number-format';
 import CheckoutCost from '../components/ui/CheckoutCost';
-import AddressSection from '../components/sections/AddressSection';
 import {useNavigation} from '@react-navigation/native';
 import {checkOut} from '../actions';
 import {connect} from 'react-redux';
@@ -26,9 +23,8 @@ const PaymentScreen = ({route, auth, checkOut}) => {
   const navigation = useNavigation();
   const {checkOutData, totalPrice} = route.params;
   const handlePayForRent = () => {
-    const data = {checkOutData, token: auth.token};
-    checkOut(data);
-    navigation.reset({routes: [{name: 'Home'}]});
+    const data = {totalPrice, checkOutData, token: auth.token};
+    navigation.navigate('OvoPayment', data);
   };
   return (
     <SafeAreaView style={styles.container}>

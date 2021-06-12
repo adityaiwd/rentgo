@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -14,7 +14,11 @@ import WelcomeSection from '../components/sections/WelcomeSection';
 import TopBar from '../components/sections/TopBar';
 import theme from '../styles/theme.style';
 import BackgroundShape from '../assets/images/shapes.png';
-import {fetchUserName, fetchLatestProduct} from '../actions';
+import {
+  fetchUserName,
+  fetchLatestProduct,
+  fetchTrendingProduct,
+} from '../actions';
 import {connect} from 'react-redux';
 
 const HomeScreen = ({
@@ -22,12 +26,21 @@ const HomeScreen = ({
   auth,
   fetchUserName,
   fetchLatestProduct,
+  fetchTrendingProduct,
   latest,
+  trending,
 }) => {
   useEffect(() => {
     fetchLatestProduct();
+    fetchTrendingProduct();
     auth.isAuthenticated && fetchUserName(auth.token);
-  }, [auth.isAuthenticated, auth.token, fetchUserName, fetchLatestProduct]);
+  }, [
+    auth.isAuthenticated,
+    auth.token,
+    fetchUserName,
+    fetchLatestProduct,
+    fetchTrendingProduct,
+  ]);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={BackgroundShape} style={styles.shape}>
@@ -37,7 +50,7 @@ const HomeScreen = ({
           <View style={styles.content}>
             <ScrollView>
               <CategorySection />
-              <TrendingSection data={latest} />
+              <TrendingSection data={trending} />
               <LatestSection data={latest} />
             </ScrollView>
           </View>
@@ -53,7 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   shape: {
-    width: '100%',
+    flex: 1,
   },
   content: {
     flex: 1,
@@ -66,9 +79,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {auth: state.auth, name: state.name, latest: state.latest};
+  return {
+    auth: state.auth,
+    name: state.name,
+    latest: state.latest,
+    trending: state.trending,
+  };
 };
 
-export default connect(mapStateToProps, {fetchUserName, fetchLatestProduct})(
-  HomeScreen,
-);
+export default connect(mapStateToProps, {
+  fetchUserName,
+  fetchLatestProduct,
+  fetchTrendingProduct,
+})(HomeScreen);

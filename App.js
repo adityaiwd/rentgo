@@ -20,6 +20,9 @@ import AddItemScreen from './pages/AddItem';
 import VerifyAccountScreen from './pages/VerifyAccount';
 import VerifyIDScreen from './pages/VerifyID';
 import SearchScreen from './pages/Search';
+import OvoPaymentScreen from './pages/OvoPayment';
+import SuccessPaymentScreen from './pages/SuccessPayment';
+import RateScreen from './pages/Rate';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import theme from './styles/theme.style';
@@ -29,6 +32,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import {setAuthorizationToken} from './actions';
+import Toast from 'react-native-toast-message';
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -141,6 +145,7 @@ export default function App() {
           type: 'LOGIN_USER',
           payload: token,
         });
+        console.log(token);
       } catch (error) {
         console.log(error);
       }
@@ -165,7 +170,14 @@ export default function App() {
           <Stack.Screen name="VerifyAccount" component={VerifyAccountScreen} />
           <Stack.Screen name="VerifyID" component={VerifyIDScreen} />
           <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="OvoPayment" component={OvoPaymentScreen} />
+          <Stack.Screen name="Rate" component={RateScreen} />
+          <Stack.Screen
+            name="SuccessPayment"
+            component={SuccessPaymentScreen}
+          />
         </Stack.Navigator>
+        <Toast ref={ref => Toast.setRef(ref)} style={{zIndex: 99}} />
       </NavigationContainer>
     </Provider>
   );

@@ -1,43 +1,26 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import TransactionPerVendor from '../ui/TransactionPerVendor';
+import moment from 'moment';
 
-const RentedItems = [
-  {
-    name: 'Canon EOS 90 D',
-    vendor: 'Kameravest',
-    price: 200000,
-    expire: '20 May 2021',
-    image: require('../../assets/images/product-camera.jpg'),
-  },
-  {
-    name: 'Lensa Fix Canon',
-    vendor: 'Kameravest',
-    price: 75000,
-    expire: '20 May 2021',
-    image: require('../../assets/images/product-lens.jpg'),
-  },
-];
-
-const ToPaySection = () => {
+const ToPaySection = ({data}) => {
   return (
     <View style={styles.container}>
-      <TransactionPerVendor
-        transactionID="QZK023"
-        transactionDate="19 May 2021 10:19 PM"
-        buttonTitle="Payment Method"
-        buttonText="Bank Transfer"
-        items={RentedItems}
-        withTotal
-      />
-      <TransactionPerVendor
-        transactionID="QZK022"
-        transactionDate="17 May 2021 08:20 PM"
-        buttonTitle="Payment Method"
-        buttonText="Digital Payment"
-        items={RentedItems}
-        withTotal
-      />
+      {data &&
+        data.map(order => (
+          <TransactionPerVendor
+            key={order.receipt_code}
+            receiptCode={order.receipt_code}
+            transactionID={order.receipt_code.substr(
+              order.receipt_code.length - 6,
+            )}
+            transactionDate={moment(order.start_date).format('DD MMM YYYY')}
+            endDate={moment(order.finish_date).format('DD MMM YYYY')}
+            buttonTitle="Payment Method"
+            buttonText="Bank Transfer"
+            withTotal
+          />
+        ))}
     </View>
   );
 };

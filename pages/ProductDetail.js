@@ -31,7 +31,7 @@ const ProductDetailScreen = ({
 }) => {
   const {itemId} = route.params;
   const [itemAmount, setItemAmount] = useState(1);
-  const {name, vendor, price} = detail;
+  const {name, vendor, price, overview} = detail;
   useEffect(() => {
     fetchProductDetail(itemId);
   }, [fetchProductDetail, itemId]);
@@ -76,14 +76,7 @@ const ProductDetailScreen = ({
               />
             </View>
             <DetailSectionTitle title="Overview" withoutSeeAll />
-            <Text style={styles.overviewDesc}>
-              Canon EOS 90D Kit adalah kamera DSLR yang dilengkapi 32.5MP APS-C
-              CMOS Sensor, DIGIC 8 Image Processor, dapat melakukan perekaman 4K
-              UHD 30p Video, dan juga dilengkapi LCD Touchscreen 3 inci. Kamera
-              ini pun memiliki tipe sensor CMOS dengan ukuran 22.3 x 14.8mm.
-              Video pada kamera ini beresolusi Full HD dengan minimum ISO 100
-              dan maksimal ISO 25600.
-            </Text>
+            <Text style={styles.overviewDesc}>{overview}</Text>
             <ReviewsSection />
 
             <RelatedProductsSection />
